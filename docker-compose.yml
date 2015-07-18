@@ -6,3 +6,7 @@ import:
     - postgres
   volumes:
     - ./import-sgf:/usr/src/app
+parse:
+  build: ./parse-sgf
+  links:
+    - postgres
