@@ -17,7 +17,8 @@ if __name__ == "__main__":
     columns = [
         'id uuid primary key default uuid_generate_v4()',
         'created_at timestamp default now() NOT NULL',
-        'stream_id integer REFERENCES streams (id) NOT NULL'
+        'stream_id integer REFERENCES streams (id) NOT NULL',
+        'data json'
     ]
     cur.execute('create extension "uuid-ossp"')
     cur.execute('CREATE TABLE events ({})'.format(','.join(columns)))
