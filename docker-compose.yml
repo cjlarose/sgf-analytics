@@ -1,0 +1,6 @@
+postgres:
+  image: postgres
+import:
+  build: ./import-sgf
+  links:
+    - postgres
