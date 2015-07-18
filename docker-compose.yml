@@ -4,3 +4,5 @@ import:
   build: ./import-sgf
   links:
     - postgres
+  volumes:
+    - ./import-sgf:/usr/src/app
