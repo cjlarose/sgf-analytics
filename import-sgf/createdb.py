@@ -10,7 +10,7 @@ if __name__ == "__main__":
 
     columns = [
         'id serial primary key',
-        'name text NOT NULL'
+        'name text UNIQUE NOT NULL'
     ]
     cur.execute('CREATE TABLE streams ({})'.format(','.join(columns)))
 
