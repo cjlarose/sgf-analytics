@@ -13,7 +13,6 @@ def sgf_files():
 
 def raw_sgf_events(filenames):
     for sgf_filename in filenames:
-        print('opening file {}'.format(sgf_filename))
         f = open(sgf_filename, 'r')
         data = {
             'filename': os.path.basename(sgf_filename),
@@ -22,13 +21,11 @@ def raw_sgf_events(filenames):
         yield data
 
 def save_event(cursor, id, stream_id, data):
-    print('saving with id {} to stream {}'.format(id, stream_id))
-    print('data: {}'.format(data))
     row = (str(id), stream_id, psycopg2.extras.Json(data))
     try:
         cursor.execute("INSERT INTO events (id, stream_id, data) VALUES (%s, %s, %s)", row)
     except psycopg2.IntegrityError:
-        print("DETECTED DUPLICATE")
+        print("DETECTED DUPLICATE for event id {}".format(id))
 
 def get_stream_id(cursor, stream_name):
     cursor.execute("SELECT id FROM streams WHERE name = %s", (stream_name,))
@@ -42,10 +39,8 @@ def get_stream_id(cursor, stream_name):
 def save_events(cursor, events):
     ns = uuid.UUID('154a6113-5503-45c2-90f6-030393f91d43')
     stream_id = get_stream_id(cursor, 'raw_sgf')
-    print("STREAM_ID: {}".format(stream_id))
 
     for event in events:
-        print('saving event {}'.format(event['filename']))
         id = uuid.uuid5(ns, event['contents'])
         save_event(cursor, id, stream_id, event)
 
