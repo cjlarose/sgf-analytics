@@ -8,6 +8,6 @@ pg.connect('postgres://postgres@postgres/postgres', function(err, client) {
     client.on('notification', function(msg) {
       console.log(msg);
     });
-    client.query('LISTEN watchers');
+    client.query('LISTEN new_event');
     console.log('Listening for events');
 });

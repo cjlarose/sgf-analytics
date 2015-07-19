@@ -17,6 +17,24 @@ def create_events_table(cur):
     cur.execute('create extension "uuid-ossp"')
     cur.execute('CREATE TABLE events ({})'.format(','.join(columns)))
 
+def create_trigger_fn(cur):
+    fn_source = """
+    CREATE FUNCTION notify_trigger() RETURNS trigger AS $$
+    DECLARE
+    BEGIN
+      PERFORM pg_notify('new_event', CAST(NEW.id AS varchar(50)));
+        RETURN new;
+    END;
+    $$ LANGUAGE plpgsql;
+    """
+    cur.execute(fn_source)
+
+    trigger_source = """
+    CREATE TRIGGER watched_table_trigger AFTER INSERT ON events
+    FOR EACH ROW EXECUTE PROCEDURE notify_trigger();
+    """
+    cur.execute(trigger_source)
+
 if __name__ == "__main__":
     con = connect(dbname='postgres',
                   user='postgres',
@@ -27,6 +45,7 @@ if __name__ == "__main__":
 
     create_streams_table(cur)
     create_events_table(cur)
+    create_trigger_fn(cur)
 
     cur.close()
     con.close()
