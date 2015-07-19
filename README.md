@@ -5,6 +5,18 @@ may fail the first name. Just run it again.
 docker-compose run --entrypoint python import ./createdb.py
 ```
 
+To run the thing:
+
+```
+docker-compose up
+```
+
+If you want to delete all events to start over:
+
+```
+docker-compose run --entrypoint python import ./truncate_tables.py
+```
+
 If you want to take a look into postgres:
 
 ```
