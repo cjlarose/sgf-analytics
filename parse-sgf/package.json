@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "pg": "^4.4.0",
+    "rsvp": "^3.0.18",
     "smartgame": "^0.1.4"
   }
 }
