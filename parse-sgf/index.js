@@ -1,3 +1,13 @@
+var pg = require('pg');
 var sgf = require('smartgame');
 
-console.log('Hello World!');
+pg.connect('postgres://postgres@postgres/postgres', function(err, client) {
+    if (err)
+      console.log(err);
+
+    client.on('notification', function(msg) {
+      console.log(msg);
+    });
+    client.query('LISTEN watchers');
+    console.log('Listening for events');
+});
