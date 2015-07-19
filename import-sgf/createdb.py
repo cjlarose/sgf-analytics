@@ -23,7 +23,8 @@ def create_trigger_fn(cur):
     DECLARE
     BEGIN
       PERFORM pg_notify('new_event', CAST(NEW.id AS varchar(50)));
-        RETURN new;
+      PERFORM pg_notify('new_event_' || NEW.stream_id, CAST(NEW.id AS varchar(50)));
+      RETURN new;
     END;
     $$ LANGUAGE plpgsql;
     """
